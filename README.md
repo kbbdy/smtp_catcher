@@ -1,6 +1,6 @@
 # SMTP Catcher
 
-Simple tool I wrote to catch emails, whit live update and email download/preview.
+Simple tool I wrote to catch emails, with live update and email download/preview.
 
 ## Simple:
 
@@ -19,14 +19,13 @@ Only required if You want to run catcher in virtualenv, not in docker.
 
 ## Run in docker
 
-Ready `Dockerfile` is ready to use and run Catcher without any modification.
-Two scripts are provided to allow easy run SMTP Catcher in docker:
-- `run.sh` - which build and run SMTP Cather in console with logging
-- `run_as_daemon.sh` - which start and detach, to allow it to work in background.
+Ready to use `Dockerfile` is included, also two script files are added for convenience:
+- `run.sh` - which build and then run SMTP Cather in console with logging
+- `run_as_daemon.sh` - which build, start and detach, to allow it to work in background.
 
 After starting go to: [http://127.0.0.1:8026/]
 
-## Using
+## Configuring
 
 Without any changes web interface is running on port: 8025, SMTP server on port 1025. Additionally web socket server is running on 8026.
 
