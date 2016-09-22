@@ -704,3 +704,4 @@ class SimpleSSLWebSocketServer(SimpleWebSocketServer):
 
     def serveforever(self):
         super(SimpleSSLWebSocketServer, self).serveforever()
+

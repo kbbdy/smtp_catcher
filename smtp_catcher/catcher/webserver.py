@@ -55,6 +55,7 @@ def main():
     context['messages'] = lst
     context['count'] = len(lst)
     context['tags'] = all_tags()
+    context['WEBSOCKET_PORT'] = conf['WEBSOCKET_PORT']
     return render_template('index.html', **context)
 
 
@@ -147,13 +148,19 @@ def view_message_static(msgid, filename):
     return response
 
 
-def run_web_server(dblock, dbfile):
+def run_web_server(dblock, dbfile, outer_sock_port=None):
     '''
     Run web interface server daemon
 
     dblock - database access semaphore
     dbfile - name of sqlite database file
     '''
+    if outer_sock_port:
+        # port nomber of web socket visible for web browser can differ
+        # from number known inside docker containter, due to port
+        # redirection here we overwrite port number to allow pass it to
+        # javascript client through template.
+        conf['WEBSOCKET_PORT'] = outer_sock_port
     global dblocker
     dblocker = dblock
     logger.info("Starting web server")

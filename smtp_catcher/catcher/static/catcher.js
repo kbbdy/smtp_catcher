@@ -108,7 +108,7 @@ $(document).ready(function() {
 
     function connect(){
         try {
-            var addr = "ws://"+window.location.hostname+":8026/"
+            var addr = "ws://"+window.location.hostname+":"+WEB_SOCK+"/"
             var socket = new WebSocket(addr)
             //socket.onopen = function(){}
             socket.onmessage = reload_messages

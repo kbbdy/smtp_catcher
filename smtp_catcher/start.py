@@ -1,15 +1,25 @@
 #!/usr/bin/env python3
 # coding: utf-8
+import os
 import multiprocessing
+from catcher.settings import Setup
+cnf = os.path.abspath(os.path.join(os.path.dirname(__file__), 'settings.conf'))
+Setup(cnf)
+
 from catcher.mailcatcher import run_smtpd
 from catcher.webserver import run_web_server
 from catcher.notifier import run_socket_server
-import os
 
 
 if __name__ == '__main__':
     from catcher.log import logger
+    from catcher.settings import conf
     logger.info("Starting email catcher")
+    ws = os.environ.get('WEBSOCK', None)
+    if ws:
+        outer_sock_port = ws
+    else:
+        outer_sock_port = conf['WEBSOCKET_PORT']
 
     dblock = multiprocessing.Lock()
     socklock = multiprocessing.Lock()
@@ -39,7 +49,7 @@ if __name__ == '__main__':
     web_server = multiprocessing.Process(
         target=run_web_server,
         name='web',
-        kwargs={'dblock': dblock, 'dbfile': dbfile}
+        kwargs={'dblock': dblock, 'dbfile': dbfile, 'outer_sock_port': outer_sock_port}
         )
     socketio_server = multiprocessing.Process(
         target=run_socket_server,

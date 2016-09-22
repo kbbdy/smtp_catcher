@@ -23,4 +23,7 @@ class Config:
     def __setitem__(self, k, v):
         self._overwritten[k.lower()] = v
 
-conf = Config()
+
+def Setup(filename):
+    global conf
+    conf = Config(filename)
