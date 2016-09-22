@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Mail catcher - {{title}}</title>
+        <link rel="stylesheet" type="text/css" href="/static/main.css">
+        <script src="/static/jquery.min.js"></script>
+        <script src="/static/catcher.js"></script>
+    </head>
+    <body>
+    <table class="layout"><tbody>
+    <tr><td colspan="2">{% block header %}{% endblock %}</td></tr>
+    <tr><td class="col lewo">{% block leftcolumn %}{% endblock %}</td><td class="col prawo">{% block rightcolumn %}{% endblock %}</td></tr>
+    <tr><td colspan="2">{% block footer %}{% endblock %}</td></tr>
+    </tbody></table>
+    </body>
+</html>

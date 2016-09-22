@@ -1,0 +1,29 @@
+{% for mail in messages %}
+<tr {% if mail.new %}class="new"{% endif %}
+    {% if loop.first %} data-max="{{count}}" {% endif %}
+    data-tags="{{mail.tag}}"
+    data-preview="{{mail.url_view}}"
+    data-id="{{mail.id}}">
+
+    <td class="clickable"><span class="mail_subject">{{mail.subject}}</span><br/>
+    <span class="dim">to:</span> <span class="addr_to">{{mail.addr_to}}</span><br/>
+    <span class="dim">from:</span> <span class="addr_from">{{mail.addr_from}}</span>
+    </td>
+    <td class="clickable">
+        {% if mail.tags %}
+        <div class="tags">
+            {% for tag in mail.tags %}
+                <span class="tag {% for tagtype in tag.types %} tag-{{tagtype}}{% endfor %}">{{tag.text}}</span>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {{mail.time_human}}<br/>
+        {{mail.size|filesizeformat}}
+    </td>
+    <td class="c">
+        <a href="{{mail.url_eml}}" target="_blank" title="message_{{mail.id}}.eml"><img src="/static/download.png"/></a>
+    </td>
+</tr>
+{% else %}
+<tr><td class="empty_row">Mailbox is empty</td></tr>
+{% endfor %}

@@ -1,0 +1,38 @@
+{% extends "root.html" %}
+
+{% block header %}
+<h1><img src="/static/email.png"/> {{title}} <img src="/static/spinner.gif" style="display:none;" id="spinner"/></h1>
+<div class="tools">
+    Messages received: <b><span id="mail_counter">{{count}}</span></b>
+    <span class="sep">
+        <a href="#" id="reload" class="btn">Reload</a>
+        <a href="/clear" id="clear" class="btn">Delete all emails</a>
+    </span>
+</div>
+
+<!-- <div class="tags head">{% for tag in tags %}{% include 'tag.html'%}{% endfor %}</div> -->
+{% endblock %}
+
+{% block leftcolumn %}
+<table class="mslst">
+    <tbody id="messages">
+        {% include 'message_list.html' %}
+    </tbody>
+</table>
+{% endblock %}
+
+{% block rightcolumn %}
+    <div class="message_header">
+        <div class="tags flo" id="message_preview_tags"></div>
+        <h2 id="message_title"></h2>
+        From: <b><span id="message_from"></span></b><br/>
+        To: <b><span id="message_to"></b></span>
+    </div>
+    <div class="message_frame">
+        <iframe id="message_view" src="/empty"></iframe>
+    </div>
+{% endblock %}
+
+{% block footer %}
+    <div id="err" class="err"></div>
+{% endblock %}
