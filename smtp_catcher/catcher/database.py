@@ -14,7 +14,7 @@ class Message(pw.Model):
     subject   = pw.CharField()
     raw_data  = pw.TextField()
     size      = pw.IntegerField()
-    branch    = pw.CharField(default='')
+    raw_tags  = pw.CharField(default='')
     new       = pw.BooleanField(default=True)
 
     class Meta:
@@ -33,36 +33,50 @@ class Message(pw.Model):
         return self.time.strftime('%d.%m.%Y - %H:%M:%S')
 
     @property
+    def tag_list(self):
+        return set(filter(bool, self.raw_tags.strip('|').split('|')))
+
+    def add_tag(self, tag):
+        tlist = self.tag_list
+        tlist.add(tag.replace('|', ' ').strip())
+        if len(tlist) > 0:
+            self.raw_tags = '|'+('|'.join(tlist)) + '|'
+        else:
+            self.raw_tags = ''
+
+    @property
     def tags(self):
         res = []
-        if self.branch == 'master':
-            res.append({'types': ('branch', 'hot'),
-                        'text': 'master'})
-        elif self.branch:
-            types = ['branch']
-            if 'demo' in self.branch:
-                types.append('demo')
-            res.append({'types': types,
-                        'text': self.branch})
+        tl = list(self.tag_list)
+        tl.sort()
+        for t in tl:
+            res.append(process_tag(t))
         return res
 
+    @property
+    def has_tags(self):
+        return len(self.raw_tags) > 0
 
-def create_tag_for_branch(branchname):
-    types = ['branch']
-    if branchname == 'master':
-        return {'types': ('branch', 'hot'),
-                'text': 'master'}
-    if 'demo' in branchname:
-        types.append('demo')
-    return {'types': types,
-            'text': branchname}
+
+def process_tag(tag):
+    res = {'text': tag, 'types': []}
+    if tag in ('master', 'test'):
+        res['types'].append('branch')
+    if tag in ('master', 'hot'):
+        res['types'].append('hot')
+    return res
 
 
 def all_tags():
-    query = Message.select(Message.branch).where(Message.branch != '').distinct()
-    result = []
+    result = set()
+    query = Message.select(Message.raw_tags).where(Message.raw_tags != '').distinct()
     for msg in query:
-        yield create_tag_for_branch(msg.branch)
+        for t in msg.tag_list:
+            result.add(t)
+    result = list(result)
+    result.sort()
+    for t in result:
+        yield process_tag(msg.tags)
 
 
 def prepare_db(dbfile):

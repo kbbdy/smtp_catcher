@@ -38,7 +38,9 @@ class DumpingServer(smtpd.SMTPServer):
 
         headers = self.parse_headers(data)
         msg.subject = headers['subject']
-        msg.tag = headers['tag']
+        if headers['tag']:
+            msg.add_tag(headers['tag'])
+            # msg.raw_tags = headers['tag']
 
         dblocker.acquire()
         try:

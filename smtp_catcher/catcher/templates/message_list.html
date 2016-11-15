@@ -10,13 +10,14 @@
     <span class="dim">from:</span> <span class="addr_from">{{mail.addr_from}}</span>
     </td>
     <td class="clickable">
-        {% if mail.tags %}
+        {% if mail.has_tags %}
         <div class="tags">
             {% for tag in mail.tags %}
                 <span class="tag {% for tagtype in tag.types %} tag-{{tagtype}}{% endfor %}">{{tag.text}}</span>
             {% endfor %}
         </div>
         {% endif %}
+
         {{mail.time_human}}<br/>
         {{mail.size|filesizeformat}}
     </td>

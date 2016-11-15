@@ -74,7 +74,6 @@ def message_list():
     Message list as table body, used on message list reload
     and on automatic refresh
     '''
-    all_tags()
     lst = get_messages()
     context = {}
     context['messages'] = lst

@@ -6,8 +6,8 @@ import sys
 
 
 COMMANDS = {
-    'catcher':  ('python', ['/app/smtp_catcher/start.py']),
-    'shell':     '/bin/sh',
+    'start':  ('python', ['/app/smtp_catcher/start.py']),
+    'shell':   '/bin/sh',
 }
 
 
